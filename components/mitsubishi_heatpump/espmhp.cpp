@@ -228,10 +228,22 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
         switch(*call.get_swing_mode()) {
             case climate::CLIMATE_SWING_OFF:
                 hp->setVaneSetting("AUTO");
+                hp->setWideVaneSetting("AUTO");
                 updated = true;
                 break;
             case climate::CLIMATE_SWING_VERTICAL:
                 hp->setVaneSetting("SWING");
+                hp->setWideVaneSetting("AUTO");
+                updated = true;
+                break;
+            case climate::CLIMATE_SWING_HORIZONTAL:
+                hp->setVaneSetting("AUTO");
+                hp->setWideVaneSetting("SWING");
+                updated = true;
+                break;
+            case climate::CLIMATE_SWING_BOTH:
+                hp->setVaneSetting("SWING");
+                hp->setWideVaneSetting("SWING");
                 updated = true;
                 break;
             default:
@@ -334,10 +346,13 @@ void MitsubishiHeatPump::hpSettingsChanged() {
     /* ******** HANDLE MITSUBISHI VANE CHANGES ********
      * const char* VANE_MAP[7]        = {"AUTO", "1", "2", "3", "4", "5", "SWING"};
      */
-    if (strcmp(currentSettings.vane, "SWING") == 0) {
-        this->swing_mode = climate::CLIMATE_SWING_VERTICAL;
-    }
-    else {
+    if (strcmp(currentSettings.vane, "SWING") == 0 && strcmp(currentSettings.wideVane, "SWING") == 0) {
+        this->swing_mode = climate::CLIMATE_SWING_BOTH;
+    } else if (strcmp(currentSettings.vane, "AUTO") == 0 && strcmp(currentSettings.wideVane, "SWING") == 0) {
+            this->swing_mode = climate::CLIMATE_SWING_HORIZONTAL;
+    } else if (strcmp(currentSettings.vane, "SWING") == 0 && strcmp(currentSettings.wideVane, "AUTO") == 0) {
+            this->swing_mode = climate::CLIMATE_SWING_VERTICAL;
+    } else {
         this->swing_mode = climate::CLIMATE_SWING_OFF;
     }
     ESP_LOGI(TAG, "Swing mode is: %i", this->swing_mode);

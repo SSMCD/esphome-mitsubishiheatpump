@@ -142,7 +142,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
             }
             break;
         case climate::CLIMATE_MODE_HEAT_COOL:
-            hp->setModeSetting("HEAT_COOL");
+            hp->setModeSetting("AUTO");
             hp->setPowerSetting("ON");
             if (has_mode){
                 if (auto_setpoint.has_value() && !has_temp) {
@@ -302,7 +302,7 @@ void MitsubishiHeatPump::hpSettingsChanged() {
         } else if (strcmp(currentSettings.mode, "FAN") == 0) {
             this->mode = climate::CLIMATE_MODE_FAN_ONLY;
             this->action = climate::CLIMATE_ACTION_FAN;
-        } else if (strcmp(currentSettings.mode, "HEAT_COOL") == 0) {
+        } else if (strcmp(currentSettings.mode, "AUTO") == 0) {
             this->mode = climate::CLIMATE_MODE_HEAT_COOL;
             if (auto_setpoint != currentSettings.temperature) {
                 auto_setpoint = currentSettings.temperature;

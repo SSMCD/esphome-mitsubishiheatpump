@@ -225,6 +225,10 @@ climate:
     # logging:baud_rate above to allow the built-in UART0 to function for
     # logging.
     hardware_uart: UART0
+    horizontal_vane_select:
+      name: Horizontal Vane Position
+    vertical_vane_select:
+      name: Horizontal Vane Position
 ```
 
 # Advanced configuration
@@ -242,7 +246,7 @@ climate:
     supports:
       mode: [HEAT_COOL, COOL, HEAT, FAN_ONLY]
       fan_mode: [AUTO, LOW, MEDIUM, HIGH]
-      swing_mode: [OFF, VERTICAL]
+      swing_mode: [OFF, VERTICAL, HORIZONTAL, BOTH]
     visual:
       min_temperature: 16
       max_temperature: 31
@@ -267,7 +271,7 @@ climate:
 	Supported fan speeds for the HeatPump. Default: `['AUTO', 'DIFFUSE', 'LOW',
 	'MEDIUM', 'MIDDLE', 'HIGH']` ** *swing_mode* (_Optional_, list): Supported
 	fan swing modes. Most Mitsubishi units only support the default. Default:
-    `['OFF', 'VERTICAL']`
+    `['OFF', 'VERTICAL', 'HORIZONTAL', 'BOTH']`
 
 ## Other configuration
 

@@ -226,9 +226,9 @@ climate:
     # logging.
     hardware_uart: UART0
     horizontal_vane_select:
-      name: Horizontal Vane Position
+      name: ${name} Horizontal Vane
     vertical_vane_select:
-      name: Horizontal Vane Position
+      name: ${name} Vertical Vane
 ```
 
 # Advanced configuration

@@ -137,25 +137,25 @@ void MitsubishiHeatPump::on_vertical_swing_change(const std::string &swing) {
     ESP_LOGD(TAG, "Setting vertical swing position");
     bool updated = false;
 
-    if (swing == "swing") {
+    if (swing == "SWING") {
         hp->setVaneSetting("SWING");
         updated = true;
-    } else if (swing == "auto") {
+    } else if (swing == "AUTO") {
         hp->setVaneSetting("AUTO");
         updated = true;
-    } else if (swing == "up") {
+    } else if (swing == "UP") {
         hp->setVaneSetting("1");
         updated = true;
-    } else if (swing == "up_center") {
+    } else if (swing == "UP_CENTER") {
         hp->setVaneSetting("2");
         updated = true;
-    } else if (swing == "center") {
+    } else if (swing == "CENTER") {
         hp->setVaneSetting("3");
         updated = true;
-    } else if (swing == "down_center") {
+    } else if (swing == "DOWN_CENTER") {
         hp->setVaneSetting("4");
         updated = true;
-    } else if (swing == "down") {
+    } else if (swing == "DOWN") {
         hp->setVaneSetting("5");
         updated = true;
     } else {
@@ -172,25 +172,25 @@ void MitsubishiHeatPump::on_horizontal_swing_change(const std::string &swing) {
     ESP_LOGD(TAG, "Setting horizontal swing position");
     bool updated = false;
 
-    if (swing == "swing") {
+    if (swing == "SWING") {
         hp->setWideVaneSetting("SWING");
         updated = true;
-    } else if (swing == "auto") {
+    } else if (swing == "AUTO") {
         hp->setWideVaneSetting("<>");
         updated = true;
-    } else if (swing == "left") {
+    } else if (swing == "LEFT") {
         hp->setWideVaneSetting("<<");
         updated = true;
-    } else if (swing == "left_center") {
+    } else if (swing == "LEFT_CENTER") {
         hp->setWideVaneSetting("<");
         updated = true;
-    } else if (swing == "center") {
+    } else if (swing == "CENTER") {
         hp->setWideVaneSetting("|");
         updated = true;
-    } else if (swing == "right_center") {
+    } else if (swing == "RIGHT_CENTER") {
         hp->setWideVaneSetting(">");
         updated = true;
-    } else if (swing == "right") {
+    } else if (swing == "RIGHT") {
         hp->setWideVaneSetting(">>");
         updated = true;
     } else {
@@ -456,48 +456,49 @@ void MitsubishiHeatPump::hpSettingsChanged() {
     /* ******** HANDLE MITSUBISHI VANE CHANGES ********
      * const char* VANE_MAP[7]        = {"AUTO", "1", "2", "3", "4", "5", "SWING"};
      */
-    if (strcmp(currentSettings.vane, "SWING") == 0 && strcmp(currentSettings.wideVane, "SWING") == 0) {
+    if (strcmp(currentSettings.vane, "SWING") == 0 &&
+        strcmp(currentSettings.wideVane, "SWING") == 0) {
         this->swing_mode = climate::CLIMATE_SWING_BOTH;
-    } else if (strcmp(currentSettings.vane, "AUTO") == 0 && strcmp(currentSettings.wideVane, "SWING") == 0) {
-            this->swing_mode = climate::CLIMATE_SWING_HORIZONTAL;
-    } else if (strcmp(currentSettings.vane, "SWING") == 0 && strcmp(currentSettings.wideVane, "|") == 0) {
-            this->swing_mode = climate::CLIMATE_SWING_VERTICAL;
+    } else if (strcmp(currentSettings.vane, "SWING") == 0) {
+        this->swing_mode = climate::CLIMATE_SWING_VERTICAL;
+    } else if (strcmp(currentSettings.wideVane, "SWING") == 0) {
+        this->swing_mode = climate::CLIMATE_SWING_HORIZONTAL;
     } else {
         this->swing_mode = climate::CLIMATE_SWING_OFF;
     }
     ESP_LOGI(TAG, "Swing mode is: %i", this->swing_mode);
     if (strcmp(currentSettings.vane, "SWING") == 0) {
-        this->update_swing_vertical("swing");
+        this->update_swing_vertical("SWING");
     } else if (strcmp(currentSettings.vane, "AUTO") == 0) {
-        this->update_swing_vertical("auto");
+        this->update_swing_vertical("AUTO");
     } else if (strcmp(currentSettings.vane, "1") == 0) {
-        this->update_swing_vertical("up");
+        this->update_swing_vertical("UP");
     } else if (strcmp(currentSettings.vane, "2") == 0) {
-        this->update_swing_vertical("up_center");
+        this->update_swing_vertical("UP_CENTER");
     } else if (strcmp(currentSettings.vane, "3") == 0) {
-        this->update_swing_vertical("center");
+        this->update_swing_vertical("CENTER");
     } else if (strcmp(currentSettings.vane, "4") == 0) {
-        this->update_swing_vertical("down_center");
+        this->update_swing_vertical("DOWN_CENTER");
     } else if (strcmp(currentSettings.vane, "5") == 0) {
-        this->update_swing_vertical("down");
+        this->update_swing_vertical("DOWN");
     }
 
     ESP_LOGI(TAG, "Vertical vane mode is: %s", currentSettings.vane);
 
     if (strcmp(currentSettings.wideVane, "SWING") == 0) {
-        this->update_swing_horizontal("swing");
+        this->update_swing_horizontal("SWING");
     } else if (strcmp(currentSettings.wideVane, "<>") == 0) {
-        this->update_swing_horizontal("auto");
+        this->update_swing_horizontal("AUTO");
     } else if (strcmp(currentSettings.wideVane, "<<") == 0) {
-        this->update_swing_horizontal("left");
+        this->update_swing_horizontal("LEFT");
     } else if (strcmp(currentSettings.wideVane, "<") == 0) {
-        this->update_swing_horizontal("left_center");
+        this->update_swing_horizontal("LEFT_CENTER");
     } else if (strcmp(currentSettings.wideVane, "|") == 0) {
-        this->update_swing_horizontal("center");
+        this->update_swing_horizontal("CENTER");
     } else if (strcmp(currentSettings.wideVane, ">") == 0) {
-        this->update_swing_horizontal("right_center");
+        this->update_swing_horizontal("RIGHT_CENTER");
     } else if (strcmp(currentSettings.wideVane, ">>") == 0) {
-        this->update_swing_horizontal("right");
+        this->update_swing_horizontal("RIGHT");
     }
 
     ESP_LOGI(TAG, "Horizontal vane mode is: %s", currentSettings.wideVane);
@@ -590,8 +591,8 @@ void MitsubishiHeatPump::setup() {
     this->target_temperature = NAN;
     this->fan_mode = climate::CLIMATE_FAN_OFF;
     this->swing_mode = climate::CLIMATE_SWING_OFF;
-    this->vertical_swing_state_ = "auto";
-    this->horizontal_swing_state_ = "auto";
+    this->vertical_swing_state_ = "AUTO";
+    this->horizontal_swing_state_ = "CENTER";
 
 #ifdef USE_CALLBACKS
     hp->setSettingsChangedCallback(
